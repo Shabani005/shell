@@ -40,7 +40,7 @@ int main(void){
       break;
     } else if (strcmp(args[0], "cd") == 0){
       if (args[1]){
-        if (!chdir(args[1])) perror("cd");
+        if (chdir(args[1]) != 0) perror("cd");
       } else {
         char *home = getenv("HOME");
         chdir(home);
