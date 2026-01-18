@@ -11,6 +11,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include <stdint.h>
+#include <stdarg.h>
 
 typedef struct {
   int debug;
@@ -118,6 +119,7 @@ void nb_free(nb_arr *newarr);
 char* nb_strdup(const char* s); // make this void that uses realloc later.
 char** nb_split_by_delim(char* str, char delim);
 char* nb_append_null(char* buf, size_t len);
+char* nb_temp_sprintf(const char *fmt, ...);
 
 void nb_print(nb_arr *newarr);
 void nb_print_info(nb_arr *newarr);
@@ -850,6 +852,16 @@ bool nb_is_float(char* v){
 bool nb_is_number(char* v){
   if (nb_is_int(v) || nb_is_float(v)) return true;
   return false;
+}
+
+char* nb_temp_sprintf(const char *fmt, ...){
+  static char s[8192];
+
+  va_list ap;
+  va_start(ap, fmt);
+  vsnprintf(s, sizeof(s), fmt, ap);
+  va_end(ap);
+  return s;
 }
 #endif //NB_IMPLEMENTATION
 

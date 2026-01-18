@@ -3,6 +3,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <pwd.h>
+#include <limits.h>
 
 // #include <editline/readline.h>
 #include <stdbool.h>
@@ -13,13 +15,24 @@
 
 #define MAX_ARGS 128
 
+const char* getuser(){
+  struct passwd *pw = getpwuid(getuid());
+  return pw ? pw->pw_name : "unknown";
+}
+
+const char* getdir(){
+  static char cwd[PATH_MAX];
+  if (getcwd(cwd, sizeof(cwd))) return cwd;
+  return "?";
+}
+
 int main(void){
   char* line;
   // char *args[MAX_ARGS];
 
   while (true){
     signal(SIGINT, SIG_IGN);
-    line = readline("> ");
+    line = readline(nb_temp_sprintf("%s:%s $ ", getuser(), getdir()));
 
     if (!line) break;
     if (*line) add_history(line);
