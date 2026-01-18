@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 // #include <editline/readline.h>
 #include <stdbool.h>
@@ -17,6 +18,7 @@ int main(void){
   // char *args[MAX_ARGS];
 
   while (true){
+    signal(SIGINT, SIG_IGN);
     line = readline("> ");
 
     if (!line) break;
@@ -34,6 +36,8 @@ int main(void){
       continue;
     }
 
+    
+    
     if (strcmp(args[0], "exit") == 0){
       free(args);
       free(line);
@@ -48,6 +52,7 @@ int main(void){
     } else {
     pid_t pid = fork();
     if (pid == 0){
+      signal(SIGINT, SIG_DFL);
       execvp(args[0], args);
       perror("execvp");
       _exit(1);
