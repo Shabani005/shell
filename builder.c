@@ -1,17 +1,16 @@
-#define NB_IMPLEMENTATION
-#include "nb.h"
+#define CHAOS_IMPLEMENTATION
+#include "chaos.h"
 
 int main(int argc, char** argv){
-  nb_rebuild(argc, argv);
+  rebuild(argc, argv, __FILE__);
 
-  nb_arr cmd = {0};
-  nb_append_da(&cmd, "cc");
-  nb_append_da(&cmd, "-o");
-  nb_append_da(&cmd, "shell");
-  nb_append_da(&cmd, "./shell.c");
-  nb_append_da(&cmd, "-lreadline");
-  // nb_append_da(&cmd, "-static");
+  cmd_arr cmd = {0};
+  cmd_append(&cmd, "cc");
+  cmd_append(&cmd, "-o");
+  cmd_append(&cmd, "shell");
+  cmd_append(&cmd, "./shell.c");
+  cmd_append(&cmd, "-lreadline");
     
-  nb_cmd(&cmd);
+  cmd_run(&cmd);
   return 0;
 }
